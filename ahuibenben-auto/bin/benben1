@@ -1,0 +1,11 @@
+#!/usr/bin/env node
+const program = require('commander')
+const {init, refresh} = require('../lib/app')
+program.version(require('../package').version, '-v, --vers');
+program.command('init <name>')
+.description('init project')
+.action((init))
+program.command('refresh')
+.description('更新')
+.action((refresh))
+program.parse(process.argv)

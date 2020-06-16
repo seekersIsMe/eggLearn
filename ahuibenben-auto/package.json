@@ -1,0 +1,14 @@
+{
+  "name": "benben-router-auto",
+  "version": "1.0.8",
+  "description": "自动路由",
+  "main": "index.js",
+  "bin": {
+    "benben1": "./bin/benben1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
