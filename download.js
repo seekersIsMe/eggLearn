@@ -8,6 +8,7 @@ const url = 'github:thinkjs/thinkjs'
 const path = `./downloadPackage/${url.split('/')[1]}`
 const spinner = ora('开始下载....')
 async function downloadGit (giturl, depositPath) {
+  
   // 如果已经下载，或者存在同名文件夹就不下载
   if (fs.existsSync(depositPath)) {
     let downloadNamne = fs.readFileSync(`${depositPath}/package.json`).toString()
