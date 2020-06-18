@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "axios": "^0.19.2",
     "koa": "^2.12.1",
     "koa-bodyparser": "^4.3.0",
     "koa-router": "^9.0.1",
