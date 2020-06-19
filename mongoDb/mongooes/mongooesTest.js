@@ -20,6 +20,7 @@ mongoose.connection.on('open', async () =>{
 
 
   // 删除
+  // catModel.deleteOne()
   catModel.remove({
     name: /咩咩|黑皮/
   }, (err) =>{
@@ -28,7 +29,7 @@ mongoose.connection.on('open', async () =>{
   })
 
 
-  // 增加
+  // 增加一个
   // cat.save((err, res) =>{
   //   // console.log(res)
   //   if (err) {
@@ -39,7 +40,14 @@ mongoose.connection.on('open', async () =>{
   // })
 
 
-  // 增加
+  // 增加一个 没有insertOne方法
+  // catModel.create({
+  //   name: '黑皮',
+  //   variety: '奶牛猫'
+  // })
+
+
+  // 增加多个
   catModel.insertMany([
     {
       name: '黑皮',
