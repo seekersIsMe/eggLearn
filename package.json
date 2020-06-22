@@ -1,13 +1,17 @@
 {
   "dependencies": {
     "axios": "^0.19.2",
+    "chalk": "^4.1.0",
+    "download-git-repo": "^3.0.2",
     "koa": "^2.12.1",
     "koa-bodyparser": "^4.3.0",
     "koa-router": "^9.0.1",
     "koa-static": "^5.0.0",
+    "log-symbols": "^4.0.0",
     "mongodb": "^3.5.9",
     "mongoose": "^5.9.19",
     "mysql2": "^2.1.0",
+    "ora": "^4.0.4",
     "pm2": "^4.4.0",
     "sequelize": "^5.21.13"
   }
