@@ -1,5 +1,5 @@
 
 const {download} = require('./download')
-const url = 'github:mongo-express/mongo-express'
-const path = `./mongo-express`
+const url = 'github:serratus/quaggaJS'
+const path = `./quaggaJS`
 download(url, path)
