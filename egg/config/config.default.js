@@ -22,7 +22,9 @@ module.exports = appInfo => {
   const userConfig = {
     // myAppName: 'egg',
   };
-
+  config.assets = {
+    publicPath: '/public/',
+  }
   return {
     ...config,
     ...userConfig,
