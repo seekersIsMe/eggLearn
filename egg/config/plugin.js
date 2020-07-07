@@ -6,3 +6,7 @@ module.exports = {
     enable: true
   }
 };
+exports.alinode = {
+  enable: true,
+  package: 'egg-alinode',
+};
