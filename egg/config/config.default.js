@@ -42,7 +42,8 @@ module.exports = appInfo => {
     },
     mongoose:{
       client:{
-        url:'mongodb://root:123456zh@8.129.182.233:27017/test',
+        url:'mongodb://8.129.182.233:27019/test',
+        // url:'mongodb://localhost:27017/test',
         options:{}
       }
     },

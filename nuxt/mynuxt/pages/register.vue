@@ -51,9 +51,7 @@ export default {
         code: this.form.code,
         emailCode: this.form.emailCode
       }
-      this.$axios.post('/user/register', {
-        params
-      }, res => {
+      this.$axios.post('/user/register', params, res => {
 
         })
     },

@@ -23,9 +23,9 @@ class User extends Controller {
     ctx.body = captcha.data
   }
   async register () {
+    // console.log('测试',ctx1)
     let { ctx } = this
     let { email, name, psw } = ctx.request.body
-    console.log('模型',ctx.app)
     let ret = await ctx.model.User.create({ 
       email, 
       name,
