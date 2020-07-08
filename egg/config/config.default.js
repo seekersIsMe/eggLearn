@@ -39,6 +39,17 @@ module.exports = appInfo => {
         hostname: '127.0.0.1', // 不建议设置 hostname 为 '0.0.0.0'，它将允许来自外部网络和来源的连接，请在知晓风险的情况下使用
         // path: '/var/run/egg.sock',
       }
-    }
+    },
+    mongoose:{
+      client:{
+        url:'mongodb://root:123456zh@8.129.182.233:27017/test',
+        options:{}
+      }
+    },
+    security: {
+      csrf: {
+        enable: false,
+      }
+   }
   };
 };

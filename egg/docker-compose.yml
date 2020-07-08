@@ -9,3 +9,5 @@ services:
     restart: always
     ports:
       - "7001:7001"
+    depends_on: 
+      - mongo

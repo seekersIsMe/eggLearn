@@ -17,4 +17,8 @@ module.exports = app => {
   },
   controller.list.index);
   router.get('/api/category', controller.category.index)
+  router.get('/user/getEmailCode', controller.user.getEmailCode)
+  router.get('/user/getCode', controller.user.getCode)
+  router.post('/user/register', controller.user.register)
+  
 };
