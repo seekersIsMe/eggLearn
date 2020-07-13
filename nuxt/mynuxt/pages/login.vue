@@ -8,6 +8,7 @@
     </el-form-item>
      <el-form-item label="验证码">
        <el-input v-model="form.code"></el-input>
+        <el-image v-show="codePicSrc" :src="codePicSrc" @click="refreshCode"/>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="login">登录</el-button>
@@ -23,12 +24,16 @@ export default {
         name: '',
         psw: '',
         code: ''
-      }
+      },
+      codePicSrc: '/api/user/getCode',
     }
   },
   methods: {
     login() {
 
+    },
+     refreshCode() {
+      this.codePicSrc = '/api/user/getCode?_t=' + new Date().getTime()
     }
   },
 }

@@ -32,7 +32,8 @@ module.exports = app=>{
     },
     psw: {
       type: String,
-      require: true
+      require: true,
+      select: false
     },
     email: {
       type: String,
