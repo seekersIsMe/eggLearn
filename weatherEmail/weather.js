@@ -5,14 +5,59 @@ const fs = require('fs')
 const path = require('path')
 const dayjs = require('dayjs')
 const sendEmail = require('./sendEmail')
-function request (url, cb) {
-    let option = {
-        encoding: null
-    }
-    originRequest(url, option, cb)
-}
 // 赤壁当天的天气
-let url = 'http://www.qixiangwang.cn/chibi15tian.htm'
+const wData = [
+    {
+        url:'http://www.qixiangwang.cn/chibi15tian.htm',
+        name: '赤壁',
+        code: 'chibi',
+        qq: '1213344190@qq.com'
+    },
+    {
+        url: 'https://www.qixiangwang.cn/guangzhou.htm',
+        name: '广州',
+        code: 'guangzhou',
+        qq: '1213344190@qq.com'
+    },
+    {
+        url: 'https://www.qixiangwang.cn/shanghai.htm',
+        name: '上海',
+        code: 'shanghai',
+        qq: '1605006939@qq.com'
+    },
+]
+function request (url) {
+    return new Promise((resolve,reject) =>{
+        let option = {
+            encoding: null
+        }
+        originRequest(url, option, (err, res , body) =>{
+            if(err) {
+                throw new Error(err) 
+                return
+             } else {
+                 console.log('wpadasda', body)
+                resolve(body)
+             }
+           
+        })
+    }) 
+}
+function sub () {
+    let reqfun = []
+    wData.forEach(p =>{
+        reqfun.push(request(p.url))
+    })
+    Promise.all(reqfun).then(async res =>{
+        for(let i = 0;i<wData.length;i++) {
+            let $ = cheerio.load(res.toString())
+            let weatherData =  getWeaterData($)
+            console.log('ahahha', weatherData)
+            changeHtml(weatherData, wData[i].code, wData[i].name, wData[i].qq)
+        }
+    })
+}
+
 function setWeatherClass (weather) {
     let weatherClass = ''
     switch (true) {
@@ -41,7 +86,7 @@ function setWeatherClass (weather) {
     return weatherClass
 }
 
-async function getWeaterData($) {
+ function getWeaterData($) {
     const weatherClass = {
         '晴日': 'clear-day',
         '晴月': 'clear-night', 
@@ -82,8 +127,6 @@ async function getWeaterData($) {
     let weather2Bai =  dom2.find('tr').eq(0).find('td').eq(3).text() // 白天天气
     let weather2hei =  dom2.find('tr').eq(1).find('td').eq(2).text() // 夜间天气
     let weather2 = weather2Bai !== weather2hei? weather2Bai + '转' + weather2hei : (weather2Bai||weather2hei)
-    console.log('天气',temp2Low)
-    console.log('天气1',temp2Top)
     let isHasZH2 = weather2.includes('转')
     let weather2_1class = ''
     let weather2_2class = ''
@@ -103,7 +146,6 @@ async function getWeaterData($) {
     let weather3hei =  dom3.find('tr').eq(1).find('td').eq(2).text() // 夜间天气
     let weather3 = weather3Bai !== weather3hei? weather3Bai + '转' + weather3hei : (weather3Bai||weather3hei)
     let isHasZH3 = weather3.includes('转')
-    console.log('第三天天气', weather3)
     let weather3_1class = ''
     let weather3_2class = ''
     if(isHasZH3){
@@ -119,7 +161,6 @@ async function getWeaterData($) {
     let tomorrow = $('.tqqk ul li').eq(1).text() // 明天天气总体描述
     let tomorrow2 = $('.tqqk ul li').eq(2).text() // 后天天气总体描述
 
-    let email = '1213344190@qq.com'
     let week = [
         'Sunday',
         'Monday',
@@ -155,25 +196,20 @@ async function getWeaterData($) {
         weather3_1class,
         weather3_2class
     }
-    console.log('数据',weatherData)
-    // weather1.
-    await changeHtml(weatherData)
-    sendEmail(email, '天气预报', `
-    <iframe src='http://localhost:3000/'>
-    </iframe>
-    `)
+    console.log('数据', weatherData)
+    return weatherData
 }
-request(url, async function (err, res , body) {
-    // let html =  iconv.decode(body, 'utf-8')
-    if(err) {
-       throw new Error(err) 
-       return
-    } else {
-        const $ = await cheerio.load(body.toString())
-        getWeaterData($)
-    }
-})
-async function changeHtml (weatherData) {
+// request(wData, async function (err, res , body) {
+//     // let html =  iconv.decode(body, 'utf-8')
+//     if(err) {
+//        throw new Error(err) 
+//        return
+//     } else {
+//         const $ = await cheerio.load(body.toString())
+//         getWeaterData($)
+//     }
+// })
+async function changeHtml (weatherData, code, name, email) {
     const htmlPath = path.resolve(__dirname, './html/index.html') 
     const html = fs.readFileSync(htmlPath)
     const $ = cheerio.load(html.toString())
@@ -186,27 +222,31 @@ async function changeHtml (weatherData) {
     $('#weed1').text(weatherData.w1)
     $('#weed2').text(weatherData.w2)
     $('#weed3').text(weatherData.w3)
-    weatherData.weather2_1class = weatherData.weather1_1class === weatherData.weather2_1class ? weatherData.weather1_1class + '1' : weatherData.weather2_1class
-    weatherData.weather3_1class = weatherData.weather1_1class === weatherData.weather3_1class ? weatherData.weather1_1class + '2' : weatherData.weather3_1class
-    weatherData.weather3_1class = weatherData.weather2_1class === weatherData.weather3_1class ? weatherData.weather2_1class + '2' : weatherData.weather3_1class
-    $('.weather1 canvas').attr('id',  weatherData.weather1_1class)
-    $('.weather2 canvas').attr('id',  weatherData.weather2_1class)
-    $('.weather3 canvas').attr('id',  weatherData.weather3_1class)
-    fs.writeFileSync('./html/index.html',$.html())
+    $('#weat1').text(weatherData.weather1)
+    $('#weat2').text(weatherData.weather2)
+    $('#weat3').text(weatherData.weather3)
+    // weatherData.weather2_1class = weatherData.weather1_1class === weatherData.weather2_1class ? weatherData.weather1_1class + '1' : weatherData.weather2_1class
+    // weatherData.weather3_1class = weatherData.weather1_1class === weatherData.weather3_1class ? weatherData.weather1_1class + '2' : weatherData.weather3_1class
+    // weatherData.weather3_1class = weatherData.weather2_1class === weatherData.weather3_1class ? weatherData.weather2_1class + '2' : weatherData.weather3_1class
+    // $('.weather1 canvas').attr('id',  weatherData.weather1_1class)
+    // $('.weather2 canvas').attr('id',  weatherData.weather2_1class)
+    // $('.weather3 canvas').attr('id',  weatherData.weather3_1class)
+    $('h3').text(name)
+    fs.writeFileSync(`./html/${code}.html`,$.html())
+    sendEmail(email, '天气预报', 
+    `<a href="http://8.129.182.233:3010/${code}.html">点击获取你的专属天气预报,给予你特殊的关爱，中央气象台提醒你定时服用肾宝片</a>`
+    )
 }
 async function main () {
-    request(url, async function (err, res , body) {
-        // let html =  iconv.decode(body, 'utf-8')
-        if(err) {
-           throw new Error(err) 
-           return
-        } else {
-            const $ = await cheerio.load(body.toString())
-            getWeaterData($)
-        }
-    })
+    let myDate = new Date();
+    let h = myDate.getHours()
+    let f = myDate.getMinutes()
+    let s = myDate.getSeconds()
+    if(h === 6 && f === 59 && s === 0) {
+        sub()
+    }
     setTimeout(() =>{
         main()
-    }, 10000)
+    }, 1000)
 }
 module.exports = main
