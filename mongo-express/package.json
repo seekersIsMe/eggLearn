@@ -63,7 +63,7 @@
     "codemirror": "^5.23.0",
     "concurrently": "^5.0.0",
     "copy-webpack-plugin": "^4.0.1",
-    "eslint": "~3.9.1",
+    "eslint": "~4.18.2",
     "eslint-config-airbnb-base": "^8.0.0",
     "eslint-plugin-import": "^1.16.0",
     "eslint-plugin-lodash": "^2.3.5",
