@@ -11,7 +11,7 @@ const wData = [
         url:'http://www.qixiangwang.cn/chibi15tian.htm',
         name: '赤壁',
         code: 'chibi',
-        qq: '1213344190@qq.com'
+        qq: '757036923@qq.com'
     },
     {
         url: 'https://www.qixiangwang.cn/guangzhou.htm',
@@ -232,9 +232,10 @@ async function changeHtml (weatherData, code, name, email) {
     // $('.weather2 canvas').attr('id',  weatherData.weather2_1class)
     // $('.weather3 canvas').attr('id',  weatherData.weather3_1class)
     $('h3').text(name)
+    let text = code === 'chibi' ? '点击获取你的专属天气预报' : '点击获取你的专属天气预报,给予你特殊的关爱，中央气象台提醒你定时服用肾宝片' 
     fs.writeFileSync(`./html/${code}.html`,$.html())
     sendEmail(email, '天气预报', 
-    `<a href="http://8.129.182.233:3010/${code}.html">点击获取你的专属天气预报,给予你特殊的关爱，中央气象台提醒你定时服用肾宝片</a>`
+    `<a href="http://8.129.182.233:3010/${code}.html">${text}</a>`
     )
 }
 async function main () {
