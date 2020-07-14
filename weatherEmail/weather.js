@@ -50,7 +50,7 @@ function sub () {
     })
     Promise.all(reqfun).then(async res =>{
         for(let i = 0;i<wData.length;i++) {
-            let $ = cheerio.load(res.toString())
+            let $ = cheerio.load(res[i].toString())
             let weatherData =  getWeaterData($)
             console.log('ahahha', weatherData)
             changeHtml(weatherData, wData[i].code, wData[i].name, wData[i].qq)
