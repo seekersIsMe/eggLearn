@@ -58,6 +58,18 @@ function sub () {
     })
 }
 
+function refreshWeatherData () {
+    let myDate = new Date();
+    let f = myDate.getMinutes()
+    let s = myDate.getSeconds()
+    if(f === 0 && s === 0) {
+        sub()
+    }
+    setTimeout(() =>{
+        refreshWeatherData()
+    }, 1000)
+}
+
 function setWeatherClass (weather) {
     let weatherClass = ''
     switch (true) {
@@ -232,22 +244,27 @@ async function changeHtml (weatherData, code, name, email) {
     // $('.weather2 canvas').attr('id',  weatherData.weather2_1class)
     // $('.weather3 canvas').attr('id',  weatherData.weather3_1class)
     $('h3').text(name)
-    let text = code === 'chibi' ? '点击获取你的专属天气预报' : '点击获取你的专属天气预报,给予你特殊的关爱，中央气象台提醒你定时服用肾宝片' 
     fs.writeFileSync(`./html/${code}.html`,$.html())
-    sendEmail(email, '天气预报', 
-    `<a href="http://8.129.182.233:3010/${code}.html">${text}</a>`
-    )
 }
-async function main () {
+function sendMsg () {
     let myDate = new Date();
     let h = myDate.getHours()
     let f = myDate.getMinutes()
     let s = myDate.getSeconds()
-    if(h === 6 && f === 59 && s === 0) {
-        sub()
+    if(h === 7 && f === 0 && s === 0) {
+        let text = '点击获取你的专属天气预报,给予你特殊的关爱，中央气象台提醒你定时服用肾宝片' 
+        wData.forEach(p =>{
+            sendEmail(p.email, '天气预报', 
+            `<a href="http://8.129.182.233:3010/${p.code}.html">${text}</a>`
+            )
+        })
     }
     setTimeout(() =>{
-        main()
+        sendMsg()
     }, 1000)
+}
+async function main () {
+    refreshWeatherData()
+    sendMsg()
 }
 module.exports = main
