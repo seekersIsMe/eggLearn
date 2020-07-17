@@ -151,7 +151,7 @@ function setWeatherClass (weather) {
     let temp2 =  Number(temp2Top) > Number(temp2Low) ? Number(temp2Low) + '～' + Number(temp2Top) + '℃' :  Number(temp2Top) + '～' + Number(temp2Low) + '℃'
 
     // 后天详细天气
-    let dom3 =  $('.sflb table').eq(2)
+    let dom3 =  $('.sflb table').eq(3)
     let temp3Top =  dom3.find('tr').eq(0).find('td').eq(4).find('strong').text().replace(/[^0-9]/ig,"") // 白天气温
     let temp3Low =  dom3.find('tr').eq(1).find('td').eq(3).find('strong').text().replace(/[^0-9]/ig,"") // 夜间气温
     let weather3Bai =  dom3.find('tr').eq(0).find('td').eq(3).text() // 白天天气
@@ -251,10 +251,10 @@ function sendMsg () {
     let h = myDate.getHours()
     let f = myDate.getMinutes()
     let s = myDate.getSeconds()
-    if(h === 7 && f === 0 && s === 0) {
+    if((h === 7 && f === 0 && s === 0) || (h === 18 && f === 0 && s === 0)) {
         let text = '点击获取你的专属天气预报,给予你特殊的关爱，中央气象台提醒你定时服用肾宝片' 
         wData.forEach(p =>{
-            sendEmail(p.email, '天气预报', 
+            sendEmail(p.qq, '天气预报', 
             `<a href="http://8.129.182.233:3010/${p.code}.html">${text}</a>`
             )
         })
