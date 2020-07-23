@@ -10,5 +10,5 @@ services:
       - "27019:27017"
     volumes:
       - /mongoData/config/mongod.conf.orig:/etc/mongod.conf.orig 
-      - ./mongoData/data:/data/db
-      - ./mongoData/log/:/docker-entrypoint-initdb.d/
+      - /mongoData/data:/data/db
+      - /mongoData/logs/:/var/log/mongodb
