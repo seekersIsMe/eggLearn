@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  mongo:
+    image: mongo
+    container_name: mongo
+    hostname: mongo
+    restart: always
+    ports:
+      - "27019:27017"
+    volumes:
+      - /mongoData/config/mongod.conf.orig:/etc/mongod.conf.orig 
+      - ./mongoData/data:/data/db
+      - ./mongoData/log/:/docker-entrypoint-initdb.d/
