@@ -91,6 +91,9 @@ export default {
       msg: 'Welcome to Your Vue.js App'
     }
   },
+  created() {
+    console.log(ahahaha)
+  },
   methods: {
     async getdata () {
       console.log(this)
