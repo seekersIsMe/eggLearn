@@ -13,7 +13,7 @@ class User extends Controller {
     const {email} = ctx.query
     await ctx.service.tools.sendEmail(email, '邮箱验证码', html)
     this.message('请求成功')
-    ctx.session.code = code
+    ctx.session.emailCode = code
   }
   async getCode() {
     const { ctx } = this
@@ -25,7 +25,31 @@ class User extends Controller {
   async register () {
     // console.log('测试',ctx1)
     let { ctx } = this
-    let { email, name, psw } = ctx.request.body
+    let { email, name, psw , code, emailCode} = ctx.request.body
+    console.log('请求体',ctx.request.body)
+    if(code.toLowerCase() !== ctx.session.captcha.toLowerCase()) {
+      this.message('验证码不对')
+      return
+    }
+    if(emailCode !== ctx.session.emailCode) {
+      this.message('邮箱验证码不对')
+      return
+    }
+    let isInName = await ctx.model.User.findOne({
+      name
+    })
+    let isInEmail = await ctx.model.User.findOne({
+      email
+    })
+    if(isInName) {
+      this.message('该用户名已被占用')
+      return
+    }
+    // if (isInEmail) {
+    //   this.message('该邮箱已经注册')
+    //   return
+    // }
+  
     let ret = await ctx.model.User.create({ 
       email, 
       name,

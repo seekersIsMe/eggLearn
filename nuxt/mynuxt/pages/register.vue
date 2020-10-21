@@ -27,12 +27,13 @@
 </template>
 
 <script>
+import md5 from'md5'
 export default {
   data() {
     return {
       form: {
         email: '1213344190@qq.com',
-        name: Math.random().toString().slice(2,8),
+        name: Math.random().toString().slice(2,8).toString(),
         psw: '123456',
         repsw: '123456',
         code: '',
@@ -47,7 +48,7 @@ export default {
       let params = {
         email: this.form.email,
         name: this.form.name,
-        psw: this.form.psw,
+        psw: md5(this.form.psw),
         code: this.form.code,
         emailCode: this.form.emailCode
       }
