@@ -6,10 +6,12 @@ services:
     container_name: egg-mongo1
     restart: always
     ports:
-      - "8081:8081"
+      - "8082:8081"
     environment:
       ME_CONFIG_BASICAUTH_USERNAME: admin
       ME_CONFIG_BASICAUTH_PASSWORD: 123456
       ME_CONFIG_MONGODB_PORT: 27019
       ME_CONFIG_MONGODB_SERVER: 8.129.182.233
       ME_CONFIG_MONGODB_AUTH_DATABASE: test
+      ME_CONFIG_MONGODB_AUTH_USERNAME: admin
+      ME_CONFIG_MONGODB_AUTH_PASSWORD: 123456
